@@ -22,7 +22,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--tan-4);
+  background-image: url(./assets/images/realistic-style-technology-particle-background_23-2148426704.jpeg);
+  background-size: cover;
   padding: 2vmin;
   height: 100vh;
 }
@@ -31,6 +32,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
 
 #root {
   height: 100%;
@@ -84,6 +86,21 @@ code {
   background-color: var(--tan-1);
   border: .1vmin solid var(--tan-3);
   border-radius: 1vmin;
+  width: 50vw;
+  margin-top: 20vh;
+  margin-bottom: 2vh;
+}
+
+#loginform {
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+
+#signupform{
+    display: flex;
+      justify-content: center;
+      align-items: center
 }
 
 p.error-message {
