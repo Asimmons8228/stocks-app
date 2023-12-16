@@ -1,3 +1,7 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
 :root {
   --white: #FFFFFF;
   --tan-1: #FBF9F6;
