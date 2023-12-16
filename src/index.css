@@ -18,6 +18,21 @@
 *:after {
   box-sizing: border-box;
 }
+#imgbox{
+  height: 400px;
+  width: 500px;
+  border: solid 3px rgb(255, 117, 238);
+  border-right: 0;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  margin-right: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+#stocksimg{
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
 
 body {
   margin: 0;
@@ -28,8 +43,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-image: url(./assets/images/realistic-style-technology-particle-background_23-2148426704.jpeg);
   background-size: cover;
-  padding: 2vmin;
+  padding: 0;
+  padding-right: 0;
   height: 100vh;
+}
+
+nav{
+  border-bottom: 2px solid rgb(255, 117, 238);
+  padding-bottom: ;
+  height: 45px;
+  background-color: rgb(29, 9,63);
 }
 
 code {
