@@ -7,14 +7,13 @@ const portfolioSchema = new Schema({
     },
     created_at:{
         type: Date, 
-    }
+    },
     user: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
-    },
-    {
-        timestamps: true
-    }
+    }, 
+}, 
+{ timestamps: true }
 
-});
+);
