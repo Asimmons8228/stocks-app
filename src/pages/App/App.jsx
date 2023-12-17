@@ -8,6 +8,7 @@ import OrderHistoryPage from '../OrderHistoryPage/OrderHistoryPage';
 import NavBar from '../../components/NavBar/NavBar';
 import HomePage from '../HomePage/HomePage';
 import SignUpForm from '../../components/SignUpForm/SignUpForm';
+import LoginForm from '../../components/LoginForm/LoginForm';
 
 export default function App() {
   const [user, setUser] = useState(getUser());
@@ -22,6 +23,7 @@ export default function App() {
               <Route path="/orders/new" element={<NewOrderPage />} />
               <Route path="/orders" element={<OrderHistoryPage />} />
               <Route path="/signup" element={<SignUpForm />} />
+              <Route path='/login' element={<LoginForm />} />
             </Routes>
             <HomePage />
           </>

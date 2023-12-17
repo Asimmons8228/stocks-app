@@ -171,7 +171,17 @@ code {
   margin-bottom: 2vh;
   
 }
+.signupform-container {
+  padding: 3vmin;
+  background-color: rgb(43, 13, 73);
+  border: 2px solid rgb(255, 117, 238);
+  border-radius: 1vmin;
+  width: 50vw;
+  height: 50vh;
+  margin-top: 20vh;
+  margin-bottom: 2vh;
 
+}
 #loginform {
   display: flex;
   justify-content: center;
@@ -259,5 +269,12 @@ button[type="submit"] {
   background-color: rgb(255, 117, 238);
 }
 #logininput{
+  border: 1px solid rgb(255, 117, 238);
+}
+#signupbtn {
+  background-color: rgb(255, 117, 238);
+}
+
+#signupinput{
   border: 1px solid rgb(255, 117, 238);
 }
