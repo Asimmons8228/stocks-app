@@ -54,13 +54,21 @@ body {
     padding: 0;
     padding-right: 0;
     height: 90vh;
+    border-bottom: 2px solid rgb(255, 117, 238);
+    border-top: 2px solid rgb(255, 117, 238);
 }
 #home-section-2{
   height: 50vh;
   background-color: rgb(29, 9,63);
   border-top: 2px solid rgb(255, 117, 238);
   border-bottom: 2px solid rgb(255, 117, 238);
-
+  
+}
+#home-section-3 {
+  height: 90vh;
+  border-top: 2px solid rgb(255, 117, 238);
+  background-color: rgb(43, 13, 73);
+  border-bottom: 4px solid rgb(255, 117, 238);
 }
 #header{
   font-size: 30px;
@@ -80,9 +88,21 @@ body {
   margin: 0;
 }
 
+#testimonial-box{
+  height: 45vh;
+  width: 20vw;
+  background-color: white;
+  border-radius: 12px;
+  border: 2px solid rgb(255, 117, 238);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+#testiomialimg{
+  border: 2px solid rgb(255, 117, 238);
+}
+
 nav{
   border-bottom: 2px solid rgb(255, 117, 238);
-  padding-bottom: ;
   height: 45px;
   background-color: rgb(29, 9,63);
 }
