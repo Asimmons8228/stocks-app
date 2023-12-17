@@ -8,6 +8,7 @@ require('dotenv').config();
 require('./config/database');
 
 const app = express();
+const stockRoutes = require('./routes/api/stocks');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -25,6 +26,7 @@ const port = process.env.PORT || 3001;
 
 // Put API routes here, before the "catch all" route
 app.use('/api/users', require('./routes/api/users'));
+app.use('/api/stocks', stockRoutes);
 
 // The following "catch all" route (note the *) is necessary
 // to return the index.html on all non-AJAX/API requests
