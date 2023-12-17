@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { getUser } from '../../utilities/users-service';
 import './App.css';
 import AuthPage from '../AuthPage/AuthPage';
@@ -13,23 +13,30 @@ import LoginForm from '../../components/LoginForm/LoginForm';
 export default function App() {
   const [user, setUser] = useState(getUser());
 
+  useEffect(() => {
+    setUser(getUser());
+  }, []);
+
   return (
     <main className="App">
-      { user ?
+      <NavBar user={user} setUser={setUser} />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/signup" element={<SignUpForm setUser={setUser} />} />
+        <Route path="/login" element={<LoginForm setUser={setUser} />} />
+        {user ? (
           <>
-            <NavBar user={user} setUser={setUser} />
-            <Routes>
-              {/* Route components in here */}
-              <Route path="/orders/new" element={<NewOrderPage />} />
-              <Route path="/orders" element={<OrderHistoryPage />} />
-              <Route path="/signup" element={<SignUpForm />} />
-              <Route path='/login' element={<LoginForm />} />
-            </Routes>
-            <HomePage />
+            <Route path="/orders/new" element={<NewOrderPage />} />
+            <Route path="/orders" element={<OrderHistoryPage />} />
           </>
-          :
-          <AuthPage setUser={setUser} />
-      }
+        ) : (
+          <>
+            <Route path="/orders/new" element={<Navigate to="/login" />} />
+            <Route path="/orders" element={<Navigate to="/login" />} />
+          </>
+        )}
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
     </main>
   );
 }
