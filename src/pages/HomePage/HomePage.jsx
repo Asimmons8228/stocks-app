@@ -1,4 +1,7 @@
-
+import kevinImage from '../../assets/images/Kevin-image.png'
+import davidImage from '../../assets/images/T0351JZQ0-U01AVS70Z9B-d7d3a5c4df44-512.jpeg'
+import aaronImage from '../../assets/images/IMG_0511.jpg'
+import nickImage from '../../assets/images/Nick-Image.jpeg'
 
 export default function HomePage (){
     return(
@@ -25,7 +28,34 @@ export default function HomePage (){
         </div>
     </section>
     <section id="home-section-3">
-
+        <h1 id="header" className="font-bold text-xl text-white">Testimonials</h1>
+        <p className="text-white font-bold p-4">Don't believe us? Check out our happy users</p>
+        <div className="flex justify-between items-center" >
+        <div className='m-8 flex flex-col items-center'>
+            <img id='testimonialimg' src={kevinImage} alt="Kevin's Image" className="w-20. h-20 rounded-full mb-4"/>
+            <article id='testimonial-box'>
+                <p className='mt-2 p-2'>As a seasoned investor, I've tried various platforms, and Portfolio-Pro stands out. The accuracy of its analytics tools is impressive, providing valuable insights that have positively impacted my decision-making. It's an essential tool for anyone serious about their financial success.<br></br><strong>-Kevin</strong></p>
+            </article>
+        </div>
+        <div className='m-8 flex flex-col items-center'>
+            <img id='testimonialimg' src={nickImage} alt="" className='w-20. h-20 rounded-full mb-4'/>
+            <article id='testimonial-box'>
+                <p className='mt-2 p-2'>Portfolio-Pro has transformed the way I manage my investments. The intuitive interface and powerful tools make tracking stocks and analyzing performance a breeze. I've seen significant improvements in my portfolio management since using Portfolio-Pro. Highly recommended!<br></br><strong>-Nick</strong></p>
+            </article>
+        </div>
+        <div className='m-8 flex flex-col items-center'>
+            <img id='testimonialimg' src={aaronImage} className='w-20. h-20 rounded-full mb-4' alt="" />
+            <article id='testimonial-box'>
+                <p className='mt-2 p-2'>Portfolio-Pro is a game-changer for both beginners and experienced investors. The user-friendly design makes it easy to navigate, and the educational resources have helped me understand the stock market better. Managing my investments has never been this seamless.<br></br><strong>-Aaron</strong></p>
+            </article> 
+        </div>
+        <div className='m-8 flex flex-col items-center'>
+            <img id='testimonialimg' src={davidImage} alt="" className='w-20. h-20 rounded-full mb-4'/>
+            <article id='testimonial-box'>
+                <p className='mt-2 p-2'>I've been using Portfolio-Pro for over a year, and it has exceeded my expectations. The real-time updates and comprehensive reports have given me a holistic view of my portfolio's performance. The platform's reliability and innovative features make it an indispensable tool for any investor.<br></br><strong>-David</strong></p>
+            </article>
+        </div>
+        </div>
     </section>
     </>
     )
