@@ -3,7 +3,7 @@ const Asset = require('../../models/asset');
 
 
 // Grabbing stock data
-exports.getStockData = (req, res) => {
+getStockData = (req, res) => {
     const symbol = req.params.symbol;
     const options = {
         hostname: 'www.alphavantage.co',
@@ -31,7 +31,7 @@ apiReq.end();
 };
 
 //ticker lookup
-exports.searchStocks = (req, res) => {
+searchStocks = (req, res) => {
     const query = req.query.keywords;
     const apiKey = process.env.ALPHA_VANTAGE_API_KEY; 
 
@@ -69,4 +69,4 @@ async function create(req, res) {
   }
 }
 
-module.exports = { create };
+module.exports = { create, getStockData, searchStocks };

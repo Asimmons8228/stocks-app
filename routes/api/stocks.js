@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const stocksController = require('../../controllers/api/assets');
+const assetsController = require('../../controllers/api/assets');
 
-router.get('/search', stocksController.searchStocks);
-router.get('/:symbol', stocksController.getStockData);
+router.get('/search', assetsController.searchStocks);
+router.get('/:symbol', assetsController.getStockData);
 
 module.exports = router;
