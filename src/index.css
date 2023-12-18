@@ -278,6 +278,9 @@ button[type="submit"] {
 #signupinput{
   border: 1px solid rgb(255, 117, 238);
 }
+#assetinput{
+  border: 1px solid rgb(255, 117, 238);
+}
 
 #text-box{
   border: 1px solid rgb(255, 117, 238);
