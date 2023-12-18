@@ -1,5 +1,7 @@
 const https = require('https');
 
+
+// Grabbing stock data
 exports.getStockData = (req, res) => {
     const symbol = req.params.symbol;
     const options = {
@@ -27,6 +29,7 @@ apiReq.on('error', (e) => {
 apiReq.end();
 };
 
+//ticker lookup
 exports.searchStocks = (req, res) => {
     const query = req.query.keywords;
     const apiKey = process.env.ALPHA_VANTAGE_API_KEY; 
