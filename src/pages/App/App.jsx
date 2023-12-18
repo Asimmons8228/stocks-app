@@ -4,7 +4,7 @@ import { getUser } from '../../utilities/users-service';
 import './App.css';
 import AuthPage from '../AuthPage/AuthPage';
 import NewOrderPage from '../NewOrderPage/NewOrderPage';
-import OrderHistoryPage from '../OrderHistoryPage/OrderHistoryPage';
+import OrderHistoryPage from '../PortfolioPage/PortfolioPage';
 import NavBar from '../../components/NavBar/NavBar';
 import HomePage from '../HomePage/HomePage';
 import SignUpForm from '../../components/SignUpForm/SignUpForm';
@@ -27,7 +27,7 @@ export default function App() {
         {user ? (
           <>
             <Route path="/orders/new" element={<NewOrderPage />} />
-            <Route path="/orders" element={<OrderHistoryPage />} />
+            <Route path="/orders" element={<OrderHistoryPage user={user} setUser={setUser} />} />
           </>
         ) : (
           <>

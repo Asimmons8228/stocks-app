@@ -278,3 +278,31 @@ button[type="submit"] {
 #signupinput{
   border: 1px solid rgb(255, 117, 238);
 }
+
+#text-box{
+  border: 1px solid rgb(255, 117, 238);
+  border-radius: 25px;
+  font-size: 20px;
+  background-color: rgb(255, 117, 238);
+  width: 25vw;
+}
+
+#table-container{
+  height: 60vh;
+  width: 45vw;
+  background-color: white;
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+  margin-top: 10px;
+}
+#portfolio-table{
+  border-top-right-radius: 12px;
+}
+
+tr{
+  border-bottom: 2px solid rgb(255, 117, 238);
+}
+
+#welcometext{
+  font-size: 30px;
+}
