@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { getUser } from '../../utilities/users-service';
 import './App.css';
-import AuthPage from '../AuthPage/AuthPage';
 import NewAssetPage from '../NewAssetPage/NewAssetPage';
 import PortfolioPage from '../PortfolioPage/PortfolioPage';
 import NavBar from '../../components/NavBar/NavBar';
 import HomePage from '../HomePage/HomePage';
 import SignUpForm from '../../components/SignUpForm/SignUpForm';
 import LoginForm from '../../components/LoginForm/LoginForm';
+import  EditPage  from '../EditPage/EditPage';
 
 export default function App() {
   const [user, setUser] = useState(getUser());
@@ -28,6 +28,7 @@ export default function App() {
           <>
             <Route path="/asset/new" element={<NewAssetPage />} />
             <Route path="/portfolio" element={<PortfolioPage user={user} setUser={setUser} />} />
+            <Route path="/asset/edit" element={<EditPage/>} />
           </>
         ) : (
           <>
