@@ -9,6 +9,7 @@ import NavBar from '../../components/NavBar/NavBar';
 import HomePage from '../HomePage/HomePage';
 import SignUpForm from '../../components/SignUpForm/SignUpForm';
 import LoginForm from '../../components/LoginForm/LoginForm';
+import  EditPage  from '../EditPage/EditPage';
 
 export default function App() {
   const [user, setUser] = useState(getUser());
@@ -28,6 +29,7 @@ export default function App() {
           <>
             <Route path="/asset/new" element={<NewAssetPage />} />
             <Route path="/portfolio" element={<PortfolioPage user={user} setUser={setUser} />} />
+            <Route path="/asset/edit" element={<EditPage/>} />
           </>
         ) : (
           <>

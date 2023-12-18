@@ -344,6 +344,13 @@ tr{
   padding: 2px;
   margin-left: 2.5vw;
 }
+#assetbutton {
+  border: 2px solid rgb(255, 117, 238);
+  border-radius: 12px;
+  background-color: rgb(255, 117, 238);
+  border-radius: 25px;
+  width: 11.5vw;
+}
 
 #actions {
   margin-left: 2.5vw;

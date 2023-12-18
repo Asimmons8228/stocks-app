@@ -1,4 +1,5 @@
 import { checkToken } from '../../utilities/users-service';
+import { Link } from 'react-router-dom';
 
 export default function PortfolioPage({user, setUser}) {
   async function handleCheckToken() {
@@ -12,7 +13,7 @@ export default function PortfolioPage({user, setUser}) {
       <div id='portfolio-container' className='portfolio-container flex flex-col'>
         <div className='flex items-start flex-col mt-10'>
       <h1 id='welcometext' className='text-white font-bold mb-4'>Welcome, {user.name}</h1>
-      <div id='text-box' className='mb-3 mt-3'><h1 className='text-white font-bold p-2'>Current Portfolio</h1></div>
+      <div id='text-box' className='mb-3 mt-2'><h1 className='text-white font-bold p-2'>Current Portfolio</h1></div>
       </div>
       <div id='table-container'>
         <table id='portfolio-table' className="table table-bordered  bg-white">
@@ -50,7 +51,11 @@ export default function PortfolioPage({user, setUser}) {
       </tbody>
     </table>
       </div>
-      </div>
+          <div  className='flex'>
+        <h1 className='text-white font-bold m-3 p-1' id='assetbutton'><Link to={'/asset/new'}>Add Asset</Link></h1>
+        <h1 className='text-white font-bold m-3 p-1' id='assetbutton'><Link to={'/asset/edit'}>Edit Assets</Link></h1>
+        </div>
+  </div>
       <div id='stock-data-container'className='ml-auto mt-11'>
         <div className='flex'>
         <input type="text" id='searchbox' />
