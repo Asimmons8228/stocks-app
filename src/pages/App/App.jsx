@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { getUser } from '../../utilities/users-service';
 import './App.css';
 import AuthPage from '../AuthPage/AuthPage';
-import NewOrderPage from '../NewOrderPage/NewOrderPage';
+import NewAssetPage from '../NewAssetPage/NewAssetPage';
 import PortfolioPage from '../PortfolioPage/PortfolioPage';
 import NavBar from '../../components/NavBar/NavBar';
 import HomePage from '../HomePage/HomePage';
@@ -26,7 +26,7 @@ export default function App() {
         <Route path="/login" element={<LoginForm setUser={setUser} />} />
         {user ? (
           <>
-            <Route path="/orders/new" element={<NewOrderPage />} />
+            <Route path="/asset/new" element={<NewAssetPage />} />
             <Route path="/portfolio" element={<PortfolioPage user={user} setUser={setUser} />} />
           </>
         ) : (

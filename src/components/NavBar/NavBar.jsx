@@ -16,7 +16,7 @@ export default function NavBar({ user, setUser }) {
               {user ? (
                 <>
                   <li className="flex-shrink-0"><Link className="block px-4 py-.5 font-bold text-white" to="/portfolio">Portfolio</Link></li>
-                  <li className="flex-shrink-0"><Link className="block px-4 py-.5 font-bold text-white" to="/orders/new">New Order</Link></li>   
+                  <li className="flex-shrink-0"><Link className="block px-4 py-.5 font-bold text-white" to="/asset/new">New Asset</Link></li>   
                   <li className="flex-shrink-0"><span className="block px-4 py-.5 font-bold text-white">Welcome, {user.name}</span></li>
                   <li className="flex-shrink-0"><Link className="block px-4 py-.5 font-bold text-white" to="" onClick={handleLogOut}>Log Out</Link></li>
                 </>
