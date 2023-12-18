@@ -32,6 +32,7 @@ const assetSchema = new Schema({
             },
             message: 'Share Balance must be a valid number with up to two decimal places',
         },
+    user: { type: Schema.Types.ObjectId, ref: "User", required: true, },
     },
 });
 
