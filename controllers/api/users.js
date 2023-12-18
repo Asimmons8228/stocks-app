@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const User = require('../../models/user');
 
 module.exports = {
-  create,
+  createUser,
   login,
   checkToken
 };
@@ -13,7 +13,7 @@ function checkToken(req, res) {
   res.json(req.exp);
 }
 
-async function create(req, res) {
+async function createUser(req, res) {
   try {
     // Add the user to the db
     const user = await User.create(req.body);
