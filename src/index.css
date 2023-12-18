@@ -306,3 +306,45 @@ tr{
 #welcometext{
   font-size: 30px;
 }
+#stock-data-container{
+  height: 80vh;
+  width: 45vw;
+  background-color: white;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  padding: 0;
+}
+#portfolio-container{
+  width: 45vw;
+}
+
+#searchbox{
+  height: 5vh;
+  margin-left: 2.5vw;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  width: 35vw;
+  border: 2px solid rgb(255, 117, 238)
+}
+#graph-container{
+  height: 45vh;
+  width: auto;
+  border: 2px solid rgb(255, 117, 238);
+  border-radius: 12px;
+  margin-left: 2.5vw;
+  margin-right: 2.5vw;
+}
+
+#buyticker{
+  border: 2px solid black;
+  border-radius: 12px;
+  padding: 2px;
+  margin-left: 2.5vw;
+}
+
+#actions {
+  margin-left: 2.5vw;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+}
