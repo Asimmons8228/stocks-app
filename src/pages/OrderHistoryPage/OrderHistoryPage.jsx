@@ -1,15 +1,28 @@
-import { checkToken } from '../../utilities/users-service';
+import React, { useEffect, useState } from 'react';
+import { getStockData } from '../../utilities/stock-service';
 
-export default function OrderHistoryPage() {
-  async function handleCheckToken() {
-    const expDate = await checkToken();
-    console.log(expDate);
-  }
-  
+function OrderHistoryPage() {
+  const [stockData, setStockData] = useState(null);
+
+  useEffect(() => {
+    async function loadStockData() {
+      const data = await getStockData('AAPL'); 
+      setStockData(data);
+    }
+
+    loadStockData();
+  }, []);
   return (
-    <>
-      <h1>OrderHistoryPage</h1>
-      <button onClick={handleCheckToken}>Check When My Login Expires</button>
-    </>
+    <div>
+      {stockData ? (
+        <div>
+          <pre>{JSON.stringify(stockData, null, 2)}</pre>
+        </div>
+      ) : (
+        <p>Loading stock data...</p>
+      )}
+    </div>
   );
 }
+
+export default OrderHistoryPage;
