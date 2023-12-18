@@ -26,3 +26,28 @@ apiReq.on('error', (e) => {
 
 apiReq.end();
 };
+
+exports.searchStocks = (req, res) => {
+    const query = req.query.keywords;
+    const apiKey = process.env.ALPHA_VANTAGE_API_KEY; 
+
+    const options = {
+        hostname: 'www.alphavantage.co',
+        path: `/query?function=SYMBOL_SEARCH&keywords=${query}&apikey=${apiKey}`,
+        method: 'GET',
+    };
+
+    let data = '';
+
+    https.get(options, (apiRes) => {
+        apiRes.on('data', (chunk) => {
+            data += chunk;
+        });
+        apiRes.on('end', () => {
+        res.json(JSON.parse(data));
+    });
+    }).on('error', (e) => {
+        console.error(`Problem with request: ${e.message}`);
+        res.status(500).send(e.message);
+    });
+};
