@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+
 import { useState } from "react";
-import { Component } from "react";
+
 
 export default function NewAssetPage() {
   const [formData, setFormData] = useState({

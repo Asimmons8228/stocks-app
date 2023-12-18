@@ -1,11 +1,8 @@
-import { checkToken } from '../../utilities/users-service';
 import { Link } from 'react-router-dom';
 
 export default function PortfolioPage({user, setUser}) {
-  async function handleCheckToken() {
-    const expDate = await checkToken();
-    console.log(expDate);
-  }
+
+  
   
   return (
     <>
@@ -52,7 +49,7 @@ export default function PortfolioPage({user, setUser}) {
     </table>
       </div>
           <div  className='flex'>
-        <h1 className='text-white font-bold m-3 p-1' id='assetbutton'><Link to={'/asset/new'}>Add Asset</Link></h1>
+        <h1 className='text-white font-bold mr-3 mt-3 mb-3 p-1' id='assetbutton'><Link to={'/asset/new'}>Add Asset</Link></h1>
         <h1 className='text-white font-bold m-3 p-1' id='assetbutton'><Link to={'/asset/edit'}>Edit Assets</Link></h1>
         </div>
   </div>

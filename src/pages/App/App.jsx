@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { getUser } from '../../utilities/users-service';
 import './App.css';
-import AuthPage from '../AuthPage/AuthPage';
 import NewAssetPage from '../NewAssetPage/NewAssetPage';
 import PortfolioPage from '../PortfolioPage/PortfolioPage';
 import NavBar from '../../components/NavBar/NavBar';
