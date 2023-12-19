@@ -1,9 +1,21 @@
-
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function PortfolioPage({user, setUser}) {
 
-  
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState(null);
+
+  const handleSearch = async (event) => {
+    event.preventDefault(); 
+    try {
+      const response = await fetch(`/api/stocks/search?keywords=${searchTerm}`);
+      const data = await response.json();
+      setSearchResults(data); 
+    } catch (error) {
+      console.error('Error fetching search results:', error);
+    }
+  };
   
   return (
     <>
@@ -54,12 +66,23 @@ export default function PortfolioPage({user, setUser}) {
         <h1 className='text-white font-bold m-3 p-1' id='assetbutton'><Link to={'/asset/edit'}>Edit Assets</Link></h1>
         </div>
   </div>
-      <div id='stock-data-container'className='ml-auto mt-11'>
+
+
+      <div id='stock-data-container' className='ml-auto mt-11'>
         <div className='flex'>
-        <input type="text" id='searchbox' />
+          <form onSubmit={handleSearch}>
+            <input
+              type="text"
+              id='searchbox'
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search for a stock..."
+            />
+            <button type="submit">Search</button>
+          </form>
         </div>
         <div className='flex-col'>
-        <div id='graph-container'></div>
+          <div id='graph-container'></div>
         </div>
         <div id='actions' className='flex'>
           <h1 className='font-bold'>Recommended Actons: </h1>
