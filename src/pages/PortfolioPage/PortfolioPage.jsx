@@ -78,7 +78,7 @@ export default function PortfolioPage({user, setUser}) {
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search for a stock..."
             />
-            <button type="submit">Search</button>
+            <button type="submit" style={{ color: 'black', backgroundColor: 'white', border: '1px solid black', borderRadius: '40px', padding: '8px 1px', cursor: 'pointer' }}>Search</button>
           </form>
         </div>
         <div className='flex-col'>
