@@ -1,11 +1,27 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
 
 export default function PortfolioPage({user, setUser}) {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState(null);
+  const [assets, setAssets] = useState([]);
+
+  useEffect(() => {
+    const fetchAssets = async () => {
+      try {
+        const response = await fetch('/api/assets');
+        const data = await response.json();
+        console.log('Fetched Assets:', data);
+        setAssets(data);
+      } catch (error) {
+        console.error('Error fetching assets:', error);
+      }
+    };
+    fetchAssets();
+  }, []);
 
   const handleSearch = async (event) => {
     event.preventDefault(); 
@@ -38,27 +54,15 @@ export default function PortfolioPage({user, setUser}) {
         </tr>
       </thead>
       <tbody>
-        <tr>
-         <td>{assets.symbol}</td>
-         <td>100</td>
-         <td>$150.00</td>
+        {assets.map((asset) => (
+        <tr key={asset._id}>
+         <td>{asset.symbol}</td>
+         <td>{asset.share_balance}</td>
+         <td>{asset.purchase_price}</td>
          <td>$15,000.00</td>
          <td>$2,500.00</td>
         </tr>
-        <tr>
-          <td>GOOGL</td>
-          <td>50</td>
-          <td>$2,000.00</td>
-          <td>$100,000.00</td>
-          <td>-$5,000.00</td>
-        </tr>
-        <tr>
-          <td>MSFT</td>
-          <td>75</td>
-          <td>$180.00</td>
-          <td>$13,500.00</td>
-          <td>$1,500.00</td>
-        </tr>
+        ))}
       </tbody>
     </table>
       </div>

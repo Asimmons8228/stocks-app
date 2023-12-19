@@ -41,4 +41,14 @@ async function create(req, res) {
   }
 }
 
-module.exports = { create, searchStocks };
+async function getAllAssets(req, res) {
+  try {
+    const assets = await Asset.find();
+    res.json(assets);
+  } catch (error) {
+    console.error('Error fetching assets:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+
+module.exports = { create, getAllAssets, searchStocks };
