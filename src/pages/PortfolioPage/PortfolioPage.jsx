@@ -5,14 +5,15 @@ import { Link } from 'react-router-dom';
 export default function PortfolioPage({user, setUser}) {
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
+
 
   const handleSearch = async (event) => {
-    event.preventDefault(); 
+    event.preventDefault();
     try {
-      const response = await fetch(`/api/stocks/search?keywords=${searchTerm}`);
+      const response = await fetch(`/api/stocks/search?keywords=${encodeURIComponent(searchTerm)}`);
       const data = await response.json();
-      setSearchResults(data); 
+      setSearchResults(Array.isArray(data) ? data : [data]); 
     } catch (error) {
       console.error('Error fetching search results:', error);
     }
@@ -26,40 +27,28 @@ export default function PortfolioPage({user, setUser}) {
       <h1 id='welcometext' className='text-white font-bold mb-4'>Welcome, {user.name}</h1>
       <div id='text-box' className='mb-3 mt-2'><h1 className='text-white font-bold p-2'>Current Portfolio</h1></div>
       </div>
-      <div id='table-container' className='justify-between'>
-        <table id='portfolio-table' className="table table-bordered  bg-white justify-between">
-     <thead>
-        <tr className='justify-between'>
-          <th className=''>Stock Ticker</th>
-          <th className='pr-2'>Shares Amount</th>
-          <th className='pr-2'>Purchase Price</th>
-          <th className='pr-2'>Current Valuation</th>
-          <th className='pr-2'>Profit/Loss</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-         <td>{assets.symbol}</td>
-         <td>100</td>
-         <td>$150.00</td>
-         <td>$15,000.00</td>
-         <td>$2,500.00</td>
-        </tr>
-        <tr>
-          <td>GOOGL</td>
-          <td>50</td>
-          <td>$2,000.00</td>
-          <td>$100,000.00</td>
-          <td>-$5,000.00</td>
-        </tr>
-        <tr>
-          <td>MSFT</td>
-          <td>75</td>
-          <td>$180.00</td>
-          <td>$13,500.00</td>
-          <td>$1,500.00</td>
-        </tr>
-      </tbody>
+      <div id='table-container'>
+        <table id='portfolio-table' className="table table-bordered bg-white">
+          <thead>
+            <tr>
+              <th>Stock Ticker</th>
+              <th>Shares Amount</th>
+              <th>Purchase Price</th>
+              <th>Current Valuation</th>
+              <th>Profit/Loss</th>
+            </tr>
+          </thead>
+          <tbody>
+            {searchResults.map((asset, index) => (
+              <tr key={index}>
+                <td>{asset.symbol}</td>
+                <td>{asset.sharesAmount}</td>
+                <td>${asset.purchasePrice.toFixed(2)}</td>
+                <td>${asset.currentValuation.toFixed(2)}</td>
+                <td>${(asset.currentValuation - (asset.purchasePrice * asset.sharesAmount)).toFixed(2)}</td>
+              </tr>
+            ))}
+          </tbody>
     </table>
       </div>
           <div  className='flex'>
@@ -67,8 +56,6 @@ export default function PortfolioPage({user, setUser}) {
         <h1 className='text-white font-bold m-3 p-1' id='assetbutton'><Link to={'/asset/edit'}>Edit Assets</Link></h1>
         </div>
   </div>
-
-
       <div id='stock-data-container' className='ml-auto mt-11'>
         <div className='flex'>
           <form onSubmit={handleSearch}>
