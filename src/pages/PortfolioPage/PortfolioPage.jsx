@@ -8,6 +8,7 @@ export default function PortfolioPage({user, setUser}) {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState(null);
   const [assets, setAssets] = useState([]);
+  const [timeSeriesData, setTimeSeriesData] = useState(null);
 
   useEffect(() => {
     const fetchAssets = async () => {
@@ -23,12 +24,26 @@ export default function PortfolioPage({user, setUser}) {
     fetchAssets();
   }, []);
 
+  const fetchTimeSeriesData = async (symbol) => {
+    try {
+      const response = await fetch(`/api/stocks/daily?symbol=${encodeURIComponent(symbol)}`);
+      const data = await response.json();
+      setTimeSeriesData(data); 
+    } catch (error) {
+      console.error('Error fetching time series data:', error);
+    }
+  };
+
   const handleSearch = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`/api/stocks/search?keywords=${encodeURIComponent(searchTerm)}`);
-      const data = await response.json();
-      setSearchResults(Array.isArray(data) ? data : [data]); 
+      const searchResponse = await fetch(`/api/stocks/search?keywords=${encodeURIComponent(searchTerm)}`);
+      const searchData = await searchResponse.json();
+      setSearchResults(Array.isArray(searchData) ? searchData : [searchData]);
+      if (searchData.bestMatches && searchData.bestMatches.length > 0) {
+        const symbol = searchData.bestMatches[0]['1. symbol']; 
+        fetchTimeSeriesData(symbol);
+      }
     } catch (error) {
       console.error('Error fetching search results:', error);
     }
