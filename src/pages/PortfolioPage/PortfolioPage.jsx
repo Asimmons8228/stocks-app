@@ -1,12 +1,27 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
 
 export default function PortfolioPage({user, setUser}) {
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState(null);
+  const [assets, setAssets] = useState([]);
 
+  useEffect(() => {
+    const fetchAssets = async () => {
+      try {
+        const response = await fetch('/api/assets');
+        const data = await response.json();
+        console.log('Fetched Assets:', data);
+        setAssets(data);
+      } catch (error) {
+        console.error('Error fetching assets:', error);
+      }
+    };
+    fetchAssets();
+  }, []);
 
   const handleSearch = async (event) => {
     event.preventDefault();
@@ -27,28 +42,28 @@ export default function PortfolioPage({user, setUser}) {
       <h1 id='welcometext' className='text-white font-bold mb-4'>Welcome, {user.name}</h1>
       <div id='text-box' className='mb-3 mt-2'><h1 className='text-white font-bold p-2'>Current Portfolio</h1></div>
       </div>
-      <div id='table-container'>
-        <table id='portfolio-table' className="table table-bordered bg-white">
-          <thead>
-            <tr>
-              <th>Stock Ticker</th>
-              <th>Shares Amount</th>
-              <th>Purchase Price</th>
-              <th>Current Valuation</th>
-              <th>Profit/Loss</th>
-            </tr>
-          </thead>
-          <tbody>
-            {searchResults.map((asset, index) => (
-              <tr key={index}>
-                <td>{asset.symbol}</td>
-                <td>{asset.sharesAmount}</td>
-                <td>${asset.purchasePrice.toFixed(2)}</td>
-                <td>${asset.currentValuation.toFixed(2)}</td>
-                <td>${(asset.currentValuation - (asset.purchasePrice * asset.sharesAmount)).toFixed(2)}</td>
-              </tr>
-            ))}
-          </tbody>
+      <div id='table-container' className='justify-between'>
+        <table id='portfolio-table' className="table table-bordered  bg-white justify-between">
+     <thead>
+        <tr className='justify-between'>
+          <th className=''>Stock Ticker</th>
+          <th className='pr-2'>Shares Amount</th>
+          <th className='pr-2'>Purchase Price</th>
+          <th className='pr-2'>Current Valuation</th>
+          <th className='pr-2'>Profit/Loss</th>
+        </tr>
+      </thead>
+      <tbody>
+        {assets.map((asset) => (
+        <tr key={asset._id}>
+         <td>{asset.symbol}</td>
+         <td>{asset.share_balance}</td>
+         <td>{asset.purchase_price}</td>
+         <td>$15,000.00</td>
+         <td>$2,500.00</td>
+        </tr>
+        ))}
+      </tbody>
     </table>
       </div>
           <div  className='flex'>
