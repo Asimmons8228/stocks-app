@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+
 export default function PortfolioPage({user, setUser}) {
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -25,10 +26,10 @@ export default function PortfolioPage({user, setUser}) {
       <h1 id='welcometext' className='text-white font-bold mb-4'>Welcome, {user.name}</h1>
       <div id='text-box' className='mb-3 mt-2'><h1 className='text-white font-bold p-2'>Current Portfolio</h1></div>
       </div>
-      <div id='table-container'>
-        <table id='portfolio-table' className="table table-bordered  bg-white">
+      <div id='table-container' className='justify-between'>
+        <table id='portfolio-table' className="table table-bordered  bg-white justify-between">
      <thead>
-        <tr>
+        <tr className='justify-between'>
           <th className=''>Stock Ticker</th>
           <th className='pr-2'>Shares Amount</th>
           <th className='pr-2'>Purchase Price</th>
@@ -38,7 +39,7 @@ export default function PortfolioPage({user, setUser}) {
       </thead>
       <tbody>
         <tr>
-         <td>AAPL</td>
+         <td>{assets.symbol}</td>
          <td>100</td>
          <td>$150.00</td>
          <td>$15,000.00</td>
