@@ -300,10 +300,12 @@ button[type="submit"] {
 }
 #portfolio-table{
   border-top-right-radius: 12px;
+  width: 100%;
 }
 
 tr{
   border-bottom: 2px solid rgb(255, 117, 238);
+  width: 100%;
 }
 
 #welcometext{

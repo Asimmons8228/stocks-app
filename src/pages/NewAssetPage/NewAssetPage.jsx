@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Component } from "react";
+import {getToken} from "../../utilities/users-service"
 
 export default function NewAssetPage() {
   const [formData, setFormData] = useState({
@@ -9,8 +10,37 @@ export default function NewAssetPage() {
   purchase_price: '',
   share_balance: '',
 });
-  const handleSubmit = (e) => {
+
+  const  handleSubmit = async (e) => {
     e.preventDefault("");
+
+  try {
+      const response = await fetch('/api/assets/new', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Stock added:', data);
+
+        // Clear the form after successful submission
+        setFormData({
+          symbol: '',
+          name: '',
+          purchase_price: '',
+          share_balance: '',
+        });
+      } else {
+        console.error('Error adding stock:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error adding stock:', error.message);
+    }
 
     // Log the form data
     console.log('Submitted Data:', formData);
