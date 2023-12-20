@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useRef } from 'react';
 import { createChart } from 'lightweight-charts';
-
+import { Line } from 'react-chartjs-2';
+import StockChart from './StockChart';
 
 export default function PortfolioPage({user, setUser}) {
 
@@ -12,9 +13,9 @@ export default function PortfolioPage({user, setUser}) {
   const [assets, setAssets] = useState([]);
   const [timeSeriesData, setTimeSeriesData] = useState(null);
   const chartContainerRef = useRef(null);
-  const [chart, setChart] = useState(null);
   const chartRef = useRef(null);
   const candleSeriesRef = useRef(null);
+  const [selectedSymbol, setSelectedSymbol] = useState('');
 
   useEffect(() => {
     if (chartContainerRef.current && !chartRef.current) {
@@ -66,13 +67,15 @@ export default function PortfolioPage({user, setUser}) {
       const searchData = await searchResponse.json();
       setSearchResults(Array.isArray(searchData) ? searchData : [searchData]);
       if (searchData.bestMatches && searchData.bestMatches.length > 0) {
-        const symbol = searchData.bestMatches[0]['1. symbol']; 
+        const symbol = searchData.bestMatches[0]['1. symbol'];
+        setSelectedSymbol(symbol); 
         fetchTimeSeriesData(symbol);
       }
     } catch (error) {
       console.error('Error fetching search results:', error);
     }
   };
+  
   
   return (
     <>
