@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useRef } from 'react';
-import { createChart } from 'lightweight-charts'; 
+import { createChart } from 'lightweight-charts';
 
 
 export default function PortfolioPage({user, setUser}) {
@@ -13,50 +13,51 @@ export default function PortfolioPage({user, setUser}) {
   const [timeSeriesData, setTimeSeriesData] = useState(null);
   const chartContainerRef = useRef(null);
   const [chart, setChart] = useState(null);
+  const chartRef = useRef(null);
+  const candleSeriesRef = useRef(null);
 
   useEffect(() => {
-    const fetchAssets = async () => {
-      try {
-        const response = await fetch('/api/assets');
-        const data = await response.json();
-        console.log('Fetched Assets:', data);
-        setAssets(data);
-      } catch (error) {
-        console.error('Error fetching assets:', error);
+    if (chartContainerRef.current && !chartRef.current) {
+      const newChart = createChart(chartContainerRef.current, { width: 600, height: 200 });
+      const newCandleSeries = newChart.addCandlestickSeries();
+      chartRef.current = newChart;
+      candleSeriesRef.current = newCandleSeries;
+    }
+
+    return () => {
+      if (chartRef.current) {
+        chartRef.current.remove();
+        chartRef.current = null;
       }
     };
-    fetchAssets();
   }, []);
 
-// Inside your PortfolioPage component
-useEffect(() => {
-  if (chartContainerRef.current && !chart) {
-    const newChart = createChart(chartContainerRef.current, { width: 600, height: 300 });
-    const candleSeries = newChart.addCandlestickSeries();
-    setChart(newChart);
-    if (timeSeriesData) {
-      candleSeries.setData(timeSeriesData);
+  useEffect(() => {
+    if (candleSeriesRef.current && timeSeriesData) {
+      candleSeriesRef.current.setData(timeSeriesData);
     }
-  }
-  return () => {
-    if (chart) {
-      chart.remove();
-      setChart(null);
-    }
-  };
-}, [chartContainerRef, chart, timeSeriesData]);
-
-
-
+  }, [timeSeriesData]);
   const fetchTimeSeriesData = async (symbol) => {
     try {
       const response = await fetch(`/api/stocks/daily?symbol=${encodeURIComponent(symbol)}`);
-      const data = await response.json();
-      setTimeSeriesData(data); 
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const rawData = await response.json();
+      const formattedData = rawData.map(dataPoint => ({
+        time: dataPoint.date, 
+        open: parseFloat(dataPoint.open),
+        high: parseFloat(dataPoint.high),
+        low: parseFloat(dataPoint.low),
+        close: parseFloat(dataPoint.close),
+      }));
+  
+      setTimeSeriesData(formattedData); 
     } catch (error) {
       console.error('Error fetching time series data:', error);
     }
   };
+  
 
   const handleSearch = async (event) => {
     event.preventDefault();
