@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useRef } from 'react';
+import { createChart } from 'lightweight-charts'; 
 
 
 export default function PortfolioPage({user, setUser}) {
@@ -9,6 +11,8 @@ export default function PortfolioPage({user, setUser}) {
   const [searchResults, setSearchResults] = useState(null);
   const [assets, setAssets] = useState([]);
   const [timeSeriesData, setTimeSeriesData] = useState(null);
+  const chartContainerRef = useRef(null);
+  const [chart, setChart] = useState(null);
 
   useEffect(() => {
     const fetchAssets = async () => {
@@ -23,6 +27,26 @@ export default function PortfolioPage({user, setUser}) {
     };
     fetchAssets();
   }, []);
+
+// Inside your PortfolioPage component
+useEffect(() => {
+  if (chartContainerRef.current && !chart) {
+    const newChart = createChart(chartContainerRef.current, { width: 600, height: 300 });
+    const candleSeries = newChart.addCandlestickSeries();
+    setChart(newChart);
+    if (timeSeriesData) {
+      candleSeries.setData(timeSeriesData);
+    }
+  }
+  return () => {
+    if (chart) {
+      chart.remove();
+      setChart(null);
+    }
+  };
+}, [chartContainerRef, chart, timeSeriesData]);
+
+
 
   const fetchTimeSeriesData = async (symbol) => {
     try {
@@ -100,7 +124,7 @@ export default function PortfolioPage({user, setUser}) {
           </form>
         </div>
         <div className='flex-col'>
-          <div id='graph-container'></div>
+        <div id='graph-container' ref={chartContainerRef}></div>
         </div>
         <div id='actions' className='flex'>
           <h1 className='font-bold'>Recommended Actons: </h1>
