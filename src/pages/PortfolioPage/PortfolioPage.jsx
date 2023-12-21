@@ -237,4 +237,4 @@ export default function PortfolioPage({user, setUser}) {
       </div>
     </>
   );
-}
+}}
