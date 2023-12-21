@@ -10,6 +10,8 @@ export default function PortfolioPage({user, setUser}) {
   const [searchResults, setSearchResults] = useState(null);
   const [assets, setAssets] = useState([]);
   const [editable, setEditable] = useState(null);
+  const [timeSeriesData, setTimeSeriesData] = useState(null);
+
 
   useEffect(() => {
     const fetchAssets = async () => {
@@ -24,6 +26,7 @@ export default function PortfolioPage({user, setUser}) {
     };
     fetchAssets();
   }, []);
+
 
   const handleChange = (e, assetId)=>{
     setAssets( (assets) => 
@@ -92,10 +95,28 @@ export default function PortfolioPage({user, setUser}) {
 
   const handleSearch = async (event) => {
     event.preventDefault(); 
+
+  const fetchTimeSeriesData = async (symbol) => {
+
     try {
-      const response = await fetch(`/api/stocks/search?keywords=${searchTerm}`);
+      const response = await fetch(`/api/stocks/daily?symbol=${encodeURIComponent(symbol)}`);
       const data = await response.json();
-      setSearchResults(data); 
+      setTimeSeriesData(data); 
+    } catch (error) {
+      console.error('Error fetching time series data:', error);
+    }
+  };
+
+  const handleSearch = async (event) => {
+    event.preventDefault();
+    try {
+      const searchResponse = await fetch(`/api/stocks/search?keywords=${encodeURIComponent(searchTerm)}`);
+      const searchData = await searchResponse.json();
+      setSearchResults(Array.isArray(searchData) ? searchData : [searchData]);
+      if (searchData.bestMatches && searchData.bestMatches.length > 0) {
+        const symbol = searchData.bestMatches[0]['1. symbol']; 
+        fetchTimeSeriesData(symbol);
+      }
     } catch (error) {
       console.error('Error fetching search results:', error);
     }
@@ -147,8 +168,6 @@ export default function PortfolioPage({user, setUser}) {
         <h1 className='text-white font-bold m-3 p-1' id='assetbutton'><Link to={'/asset/edit'}>Edit Assets</Link></h1>
         </div>
   </div>
-
-
       <div id='stock-data-container' className='ml-auto mt-11'>
         <div className='flex'>
           <form onSubmit={handleSearch}>
