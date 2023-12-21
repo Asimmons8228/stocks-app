@@ -1,7 +1,5 @@
 # Portfolio-Pro
 
-![Screen Shot 2023-12-21 at 10 11 04 AM](https://github.com/Asimmons8228/stocks-app/assets/96853510/50b086ce-3d63-44c3-92de-c4eda42436b7)
-
 
 ## Overview
 Portfolio-Pro is an advanced stock portfolio management application designed to help users track and analyze their investments. With features like real-time stock data, portfolio valuation, and insightful analytics, it's the perfect tool for both novice and experienced investors! 
@@ -13,9 +11,36 @@ Portfolio-Pro is an advanced stock portfolio management application designed to 
 
 ### Technologies Used
 - React.js
-- Mongoose
+- MongoDB
 - Expres.js
 - Node.js 
+
+
+### Screenshots 
+
+- Home page
+![image](https://github.com/Asimmons8228/stocks-app/assets/87548545/58100002-9c93-427e-8e95-abed83aff335)
+
+- Sign up page
+- ![image](https://github.com/Asimmons8228/stocks-app/assets/87548545/273d310c-cc7d-40cc-bae7-f38ad02c9207)
+
+- Log in page
+-![image](https://github.com/Asimmons8228/stocks-app/assets/87548545/c4b827eb-252e-452b-a348-dc9d6f4385c7)
+
+- Main page
+![image](https://github.com/Asimmons8228/stocks-app/assets/87548545/6e6721f5-4b56-4d62-8db3-0e86310f1d92)
+
+- Stock graph
+- ![image](https://github.com/Asimmons8228/stocks-app/assets/87548545/2039711d-41df-4000-a26f-077c0dd7bc25)
+
+
+
+### Icebox 
+-Add features to determine Buy/Sell signals
+-Function to determine current valuation based on real time stock price
+-Profit/Loss function based on real time stock price
+-Potential profit/Loss based on 52 week high and low
+
 
 ## Challenging Code
 
@@ -29,3 +54,4 @@ The most challenging code was enabling the capability to edit items inline. Addi
 -Organization of components and pages is essential to a functionaly react app
 -Modern design and UI techniques
 -Would still like to implement a feature or two but overall this is a great app in my opinion.
+
