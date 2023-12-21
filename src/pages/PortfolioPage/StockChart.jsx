@@ -1,6 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js';
 
+export const options = {
+    responsive: true,
+    plugins: {
+        legend: {
+        position: 'top'
+    },
+        title: {
+        display: true,
+        text: 'Chart.js Line Chart',
+    },
+    },
+};
+    
+const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+    );
+    
 const StockChart = ({ symbol }) => {
     console.log(`StockChart symbol prop: ${symbol}`);
     const [chartData, setChartData] = useState({
@@ -63,7 +98,7 @@ const StockChart = ({ symbol }) => {
     return (
         <div>
             <h2>Stock Chart for {symbol}</h2>
-            <Line data={chartData} />
+            <Line options={options} data={chartData} />
         </div>
     );
 };
