@@ -19,7 +19,8 @@ Portfolio-Pro is an advanced stock portfolio management application designed to 
 ### Screenshots 
 
 - Home page
-![image](https://github.com/Asimmons8228/stocks-app/assets/87548545/58100002-9c93-427e-8e95-abed83aff335)
+  
+![Screen Shot 2023-12-21 at 10 11 04 AM](https://github.com/Asimmons8228/stocks-app/assets/96853510/45081997-5878-4782-b4d2-91436595bfbf)
 
 - Sign up page
 - ![image](https://github.com/Asimmons8228/stocks-app/assets/87548545/273d310c-cc7d-40cc-bae7-f38ad02c9207)
@@ -28,7 +29,8 @@ Portfolio-Pro is an advanced stock portfolio management application designed to 
 -![image](https://github.com/Asimmons8228/stocks-app/assets/87548545/c4b827eb-252e-452b-a348-dc9d6f4385c7)
 
 - Main page
-![image](https://github.com/Asimmons8228/stocks-app/assets/87548545/6e6721f5-4b56-4d62-8db3-0e86310f1d92)
+  
+![Screen Shot 2023-12-21 at 10 24 48 AM](https://github.com/Asimmons8228/stocks-app/assets/96853510/88b95590-6d16-427c-a340-a7efe1a9ed83)
 
 - Stock graph
 - ![image](https://github.com/Asimmons8228/stocks-app/assets/87548545/2039711d-41df-4000-a26f-077c0dd7bc25)
