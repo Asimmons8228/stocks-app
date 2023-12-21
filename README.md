@@ -10,7 +10,32 @@ Portfolio-Pro is an advanced stock portfolio management application designed to 
 
 ### Technologies Used
 - React.js
-- Mongoose
+- MongoDB
 - Expres.js
 - Node.js 
 
+### Screenshots 
+
+- Home page
+![image](https://github.com/Asimmons8228/stocks-app/assets/87548545/58100002-9c93-427e-8e95-abed83aff335)
+
+- Sign up page
+- ![image](https://github.com/Asimmons8228/stocks-app/assets/87548545/273d310c-cc7d-40cc-bae7-f38ad02c9207)
+
+- Log in page
+-![image](https://github.com/Asimmons8228/stocks-app/assets/87548545/c4b827eb-252e-452b-a348-dc9d6f4385c7)
+
+- Main page
+![image](https://github.com/Asimmons8228/stocks-app/assets/87548545/6e6721f5-4b56-4d62-8db3-0e86310f1d92)
+
+- Stock graph
+- ![image](https://github.com/Asimmons8228/stocks-app/assets/87548545/2039711d-41df-4000-a26f-077c0dd7bc25)
+
+
+### Challenging Code
+
+
+### Key Takeaways
+
+
+### Icebox 
