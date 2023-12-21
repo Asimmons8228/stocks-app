@@ -4,17 +4,21 @@ import { useEffect } from 'react';
 import { useRef } from 'react';
 import { createChart } from 'lightweight-charts';
 import StockChart from './StockChart';
+import { getToken } from '../../utilities/users-service';
+
 
 export default function PortfolioPage({user, setUser}) {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState(null);
   const [assets, setAssets] = useState([]);
+  const [editable, setEditable] = useState(null);
   const [timeSeriesData, setTimeSeriesData] = useState(null);
   const chartContainerRef = useRef(null);
   const chartRef = useRef(null);
   const candleSeriesRef = useRef(null);
   const [selectedSymbol, setSelectedSymbol] = useState('');
+
 
   useEffect(() => {
     if (chartContainerRef.current && !chartRef.current) {
@@ -32,12 +36,84 @@ export default function PortfolioPage({user, setUser}) {
     };
   }, []);
 
+
   useEffect(() => {
     if (candleSeriesRef.current && timeSeriesData) {
       candleSeriesRef.current.setData(timeSeriesData);
     }
   }, [timeSeriesData]);
+
+
+  const handleChange = (e, assetId)=>{
+    setAssets( (assets) => 
+    assets.map((asset) => 
+    asset._id === assetId
+    ? {...asset, [e.target.name]: e.target.value}
+    : asset
+    )
+    );
+  };
+  const toggleEditMode = (assetId) => {
+    setEditable(editable === assetId ? null : assetId);
+  }
+  
+  const handleUpdate = async (assetId) => {
+    const index = assets.findIndex(asset => asset._id === assetId);
+    const updatedAssets = [...assets]
+ 
+    const updatedData = {
+    share_balance: updatedAssets[index].share_balance,
+    purchase_price: updatedAssets[index].purchase_price,
+  };
+
+  updatedAssets[index] = {
+    ...updatedAssets[index],
+    ...assets[index],
+  };
+    
+    try {
+      const response = await fetch(`/api/assets/${assetId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        },
+        body: JSON.stringify(updatedData),
+      });
+
+      console.log('After fetch:', assets[index]);
+
+      if (response.ok){
+        setAssets(updatedAssets);
+        setEditable(null);
+      } else {
+        console.error('Error updating asset:', response.statusText);
+      }
+    } catch (error){
+      console.error('Error updating asset:', error.message);
+    }
+  };
+
+    
+  const handleDelete = async (assetId) => {
+    try {
+      const response = await fetch(`/api/assets/${assetId}`, {method: 'Delete'});
+      if (response.ok) {
+        const updatedAssets = assets.filter((asset) => asset._id !== assetId);
+        setAssets(updatedAssets);
+      } else {
+        console.error('Error deleting asset:', response.statusText);
+      }
+    }catch(error){
+      console.error('Error deleting asset:', error.message);
+    }
+  };
+
+  const handleSearch = async (event) => {
+    event.preventDefault(); 
+
   const fetchTimeSeriesData = async (symbol) => {
+
     try {
       const response = await fetch(`/api/stocks/daily?symbol=${encodeURIComponent(symbol)}`);
       if (!response.ok) {
@@ -106,12 +182,21 @@ export default function PortfolioPage({user, setUser}) {
       </thead>
       <tbody>
         {assets.map((asset) => (
-        <tr key={asset._id}>
-         <td>{asset.symbol}</td>
-         <td>{asset.share_balance}</td>
-         <td>{asset.purchase_price}</td>
+        <tr>
+         <td>{asset.symbol} </td>
+         <td>{editable === asset._id ? <input type='integer' key={asset._id}  value={asset.share_balance} name='share_balance' onChange={(e) => handleChange(e, asset._id)}/> : asset.share_balance}</td>
+         <td>{editable === asset._id ? <input type='integer' key={asset._id}   value={asset.purchase_price} name='purchase_price' onChange={(e) => handleChange(e, asset._id)}/> : asset.purchase_price}</td>
          <td>$15,000.00</td>
          <td>$2,500.00</td>
+         <td> {editable === asset._id ? (
+         <button onClick={() => handleUpdate(asset._id)}>Save</button>
+         ) : (
+         <button onClick={() => toggleEditMode(asset._id)}>Edit</button>
+         )} 
+         </td>
+         <td>
+          <button onClick={() => handleDelete(asset._id)}>Delete</button>
+         </td>
         </tr>
         ))}
       </tbody>
