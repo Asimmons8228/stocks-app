@@ -13,15 +13,22 @@ Portfolio-Pro is an advanced stock portfolio management application designed to 
 
 ### Technologies Used
 - React.js
-- Mongoose
+- MongoDB
 - Expres.js
 - Node.js 
 
 ## Challenging Code
 
+-Aaron
 ![Screen Shot 2023-12-21 at 10 01 25 AM (2)](https://github.com/Asimmons8228/stocks-app/assets/96853510/d4e4f82e-46c1-494a-92c2-b753f77d33e4)
 
 The most challenging code was enabling the capability to edit items inline. Additionally we encountered trouble getting our api data visualization to render.
+
+-Kevin
+![image](https://github.com/Asimmons8228/stocks-app/assets/87548545/f8a50aa8-0721-48bc-ac8b-b3c809f21226)
+
+The biggest issue that I faced was because of the API key. Initially I thought that there was an issue with how the API was being called (ex. if it was the routes, the handleSearch function, symbol properly displayed, if it was a chart rendering issue, etc.), however it turned out that the reason my data was not being called was due to the API limit. 
+
 
 ## Key Takeaways
 
