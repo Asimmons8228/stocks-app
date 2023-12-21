@@ -3,7 +3,7 @@ const Asset = require('../../models/asset');
 
 
 //ticker lookup
-function searchStocks(req, res) {
+async function searchStocks(req, res) {
   const query = req.query.keywords;
   const apiKey = process.env.ALPHA_VANTAGE_API_KEY;
 

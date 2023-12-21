@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useRef } from 'react';
+import { createChart } from 'lightweight-charts';
+import StockChart from './StockChart';
 import { getToken } from '../../utilities/users-service';
 
 
@@ -11,21 +14,34 @@ export default function PortfolioPage({user, setUser}) {
   const [assets, setAssets] = useState([]);
   const [editable, setEditable] = useState(null);
   const [timeSeriesData, setTimeSeriesData] = useState(null);
+  const chartContainerRef = useRef(null);
+  const chartRef = useRef(null);
+  const candleSeriesRef = useRef(null);
+  const [selectedSymbol, setSelectedSymbol] = useState('');
 
 
   useEffect(() => {
-    const fetchAssets = async () => {
-      try {
-        const response = await fetch('/api/assets');
-        const data = await response.json();
-        console.log('Fetched Assets:', data);
-        setAssets(data);
-      } catch (error) {
-        console.error('Error fetching assets:', error);
+    if (chartContainerRef.current && !chartRef.current) {
+      const newChart = createChart(chartContainerRef.current, { width: 600, height: 200 });
+      const newCandleSeries = newChart.addCandlestickSeries();
+      chartRef.current = newChart;
+      candleSeriesRef.current = newCandleSeries;
+    }
+
+    return () => {
+      if (chartRef.current) {
+        chartRef.current.remove();
+        chartRef.current = null;
       }
     };
-    fetchAssets();
   }, []);
+
+
+  useEffect(() => {
+    if (candleSeriesRef.current && timeSeriesData) {
+      candleSeriesRef.current.setData(timeSeriesData);
+    }
+  }, [timeSeriesData]);
 
 
   const handleChange = (e, assetId)=>{
@@ -100,27 +116,50 @@ export default function PortfolioPage({user, setUser}) {
 
     try {
       const response = await fetch(`/api/stocks/daily?symbol=${encodeURIComponent(symbol)}`);
-      const data = await response.json();
-      setTimeSeriesData(data); 
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const rawData = await response.json();
+      const formattedData = rawData.map(dataPoint => ({
+        time: dataPoint.date, 
+        open: parseFloat(dataPoint.open),
+        high: parseFloat(dataPoint.high),
+        low: parseFloat(dataPoint.low),
+        close: parseFloat(dataPoint.close),
+      }));
+  
+      setTimeSeriesData(formattedData); 
     } catch (error) {
       console.error('Error fetching time series data:', error);
     }
   };
+  
 
   const handleSearch = async (event) => {
     event.preventDefault();
     try {
-      const searchResponse = await fetch(`/api/stocks/search?keywords=${encodeURIComponent(searchTerm)}`);
-      const searchData = await searchResponse.json();
-      setSearchResults(Array.isArray(searchData) ? searchData : [searchData]);
-      if (searchData.bestMatches && searchData.bestMatches.length > 0) {
-        const symbol = searchData.bestMatches[0]['1. symbol']; 
-        fetchTimeSeriesData(symbol);
-      }
+        const searchResponse = await fetch(`/api/stocks/search?keywords=${encodeURIComponent(searchTerm)}`);
+        const searchData = await searchResponse.json();
+        
+        console.log(searchData);
+        if (searchData.bestMatches) {
+            console.log(searchData.bestMatches); 
+        }
+
+        setSearchResults(Array.isArray(searchData) ? searchData : [searchData]);
+        if (searchData.bestMatches && searchData.bestMatches.length > 0) {
+            console.log(searchData.bestMatches[0]); 
+            const symbol = searchData.bestMatches[0]['1. symbol'];
+            setSelectedSymbol(symbol);
+            console.log(`Selected Symbol in PortfolioPage: ${symbol}`); 
+            fetchTimeSeriesData(symbol);
+        }
     } catch (error) {
-      console.error('Error fetching search results:', error);
+        console.error('Error fetching search results:', error);
     }
-  };
+    
+};
+  
   
   return (
     <>
@@ -168,25 +207,23 @@ export default function PortfolioPage({user, setUser}) {
         <h1 className='text-white font-bold m-3 p-1' id='assetbutton'><Link to={'/asset/edit'}>Edit Assets</Link></h1>
         </div>
   </div>
-      <div id='stock-data-container' className='ml-auto mt-11'>
-        <div className='flex'>
-          <form onSubmit={handleSearch}>
-            <input
-              type="text"
-              id='searchbox'
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search for a stock..."
-            />
-            <button type="submit" style={{ color: 'black', backgroundColor: 'white', border: '1px solid black', borderRadius: '40px', padding: '8px 1px', cursor: 'pointer' }}>Search</button>
-          </form>
-        </div>
-        <div className='flex-col'>
-          <div id='graph-container'></div>
-        </div>
-        <div id='actions' className='flex'>
-          <h1 className='font-bold'>Recommended Actons: </h1>
-        </div>
+  <div id='stock-data-container' className='ml-auto mt-11'>
+      <div className='flex'>
+        <form onSubmit={handleSearch}>
+          <input
+            type="text"
+            id='searchbox'
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search for a stock..."
+          />
+          <button type="submit" style={{ color: 'black', backgroundColor: 'white', border: '1px solid black', borderRadius: '40px', padding: '8px 1px', cursor: 'pointer' }}>Search</button>
+        </form>
+      </div>
+      {selectedSymbol && <StockChart symbol={selectedSymbol} />}
+      <div id='actions' className='flex'>
+        <h1 className='font-bold'>Recommended Actions: </h1>
+      </div>
         <div  className='flex'>
         <h1 id='buyticker'>Buy/Sell </h1>
         </div>
