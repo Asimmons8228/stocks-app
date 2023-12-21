@@ -41,6 +41,38 @@ async function create(req, res) {
   }
 }
 
+async function updateAsset(req,res){
+    console.log('request:', req.body)
+    try{
+        const updatedAsset = await Asset.findByIdAndUpdate(req.params.id, req.body);
+        res.json(updatedAsset);
+        console.log('response:', updatedAsset)
+    } catch (error) {
+        console.error('Error updating asset:', error);
+        res.status(500).json({error: 'Internal Server Error'})
+    }
+}
+
+async function getAssetById(req,res){
+    try{
+        const asset= await Asset.findById(req.params.id);
+        res.json(asset);
+    } catch (error){
+        console.error('Error fetching asset:', error);
+        res.status(500).json({error:'Internal Server Error'});
+    }
+}
+
+async function deleteAsset(req,res){
+    try{
+        await Asset.findByIdAndDelete(req.params.id);
+        res.status(204).send();
+    } catch(error) {
+        console.error('Error deleting asset:', error);
+        res.status(500).json({error: 'Internal Server Error'})
+    }
+}
+
 async function getAllAssets(req, res) {
   try {
     const assets = await Asset.find();
@@ -51,4 +83,4 @@ async function getAllAssets(req, res) {
   }
 }
 
-module.exports = { create, getAllAssets, searchStocks };
+module.exports = { create, getAllAssets, searchStocks, updateAsset, getAssetById, deleteAsset };
