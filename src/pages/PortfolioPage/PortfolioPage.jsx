@@ -36,12 +36,14 @@ export default function PortfolioPage({user, setUser}) {
     };
   }, []);
 
-
   useEffect(() => {
     if (candleSeriesRef.current && timeSeriesData) {
       candleSeriesRef.current.setData(timeSeriesData);
     }
   }, [timeSeriesData]);
+
+
+
 
 
   const handleChange = (e, assetId)=>{
@@ -109,10 +111,9 @@ export default function PortfolioPage({user, setUser}) {
     }
   };
 
-  const handleSearch = async (event) => {
-    event.preventDefault(); 
 
   const fetchTimeSeriesData = async (symbol) => {
+
 
     try {
       const response = await fetch(`/api/stocks/daily?symbol=${encodeURIComponent(symbol)}`);
@@ -159,7 +160,7 @@ export default function PortfolioPage({user, setUser}) {
     }
     
 };
-  
+
   
   return (
     <>
@@ -184,8 +185,9 @@ export default function PortfolioPage({user, setUser}) {
         {assets.map((asset) => (
         <tr>
          <td>{asset.symbol} </td>
-         <td>{editable === asset._id ? <input type='integer' key={asset._id}  value={asset.share_balance} name='share_balance' onChange={(e) => handleChange(e, asset._id)}/> : asset.share_balance}</td>
-         <td>{editable === asset._id ? <input type='integer' key={asset._id}   value={asset.purchase_price} name='purchase_price' onChange={(e) => handleChange(e, asset._id)}/> : asset.purchase_price}</td>
+
+         <td>{editable === asset._id ? <input id='editbox' type='integer' key={asset._id}  value={asset.share_balance} name='share_balance' onChange={(e) => handleChange(e, asset._id)}/> : asset.share_balance}</td>
+         <td>{editable === asset._id ? <input id='editbox' type='integer' key={asset._id}   value={asset.purchase_price} name='purchase_price' onChange={(e) => handleChange(e, asset._id)}/> : asset.purchase_price}</td>
          <td>$15,000.00</td>
          <td>$2,500.00</td>
          <td> {editable === asset._id ? (
@@ -207,23 +209,25 @@ export default function PortfolioPage({user, setUser}) {
         <h1 className='text-white font-bold m-3 p-1' id='assetbutton'><Link to={'/asset/edit'}>Edit Assets</Link></h1>
         </div>
   </div>
-  <div id='stock-data-container' className='ml-auto mt-11'>
-      <div className='flex'>
-        <form onSubmit={handleSearch}>
-          <input
-            type="text"
-            id='searchbox'
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search for a stock..."
-          />
-          <button type="submit" style={{ color: 'black', backgroundColor: 'white', border: '1px solid black', borderRadius: '40px', padding: '8px 1px', cursor: 'pointer' }}>Search</button>
-        </form>
-      </div>
-      {selectedSymbol && <StockChart symbol={selectedSymbol} />}
-      <div id='actions' className='flex'>
-        <h1 className='font-bold'>Recommended Actions: </h1>
-      </div>
+
+      <div id='stock-data-container' className='ml-auto mt-11'>
+        <div className='flex'>
+          <form onSubmit={handleSearch}>
+            <input
+              type="text"
+              id='searchbox'
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search for a stock..."
+            />
+            <button type="submit" style={{ color: 'black', backgroundColor: 'white', border: '1px solid black', borderRadius: '40px', padding: '8px 1px', cursor: 'pointer' }}>Search</button>
+          </form>
+        </div>
+        {selectedSymbol && <StockChart symbol={selectedSymbol} />}
+        <div id='actions' className='flex'>
+          <h1 className='font-bold'>Recommended Actons: </h1>
+        </div>
+
         <div  className='flex'>
         <h1 id='buyticker'>Buy/Sell </h1>
         </div>

@@ -44,7 +44,9 @@ const StockChart = ({ symbol }) => {
             {
                 label: 'Stock Price',
                 data: [],
+
                 fill: false,
+
                 backgroundColor: 'rgba(75,192,192,0.4)',
                 borderColor: 'rgba(75,192,192,1)',
             },
@@ -103,4 +105,6 @@ const StockChart = ({ symbol }) => {
     );
 };
 
+
 export default StockChart;
+

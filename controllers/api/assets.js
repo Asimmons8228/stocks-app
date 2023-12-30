@@ -121,5 +121,7 @@ async function getAllAssets(req, res) {
 }
 
 
+
 module.exports = { create, getAllAssets, searchStocks, updateAsset, getAssetById, deleteAsset,getDailyTimeSeries };
+
 
