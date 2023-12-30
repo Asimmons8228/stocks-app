@@ -19,6 +19,7 @@ export default function PortfolioPage({user, setUser}) {
   const candleSeriesRef = useRef(null);
   const [selectedSymbol, setSelectedSymbol] = useState('');
 
+
   useEffect(() => {
     if (chartContainerRef.current && !chartRef.current) {
       const newChart = createChart(chartContainerRef.current, { width: 600, height: 200 });
@@ -42,19 +43,8 @@ export default function PortfolioPage({user, setUser}) {
   }, [timeSeriesData]);
 
 
-  useEffect(() => {
-    const fetchAssets = async () => {
-      try {
-        const response = await fetch('/api/assets');
-        const data = await response.json();
-        console.log('Fetched Assets:', data);
-        setAssets(data);
-      } catch (error) {
-        console.error('Error fetching assets:', error);
-      }
-    };
-    fetchAssets();
-  }, []);
+
+
 
   const handleChange = (e, assetId)=>{
     setAssets( (assets) => 
@@ -121,7 +111,9 @@ export default function PortfolioPage({user, setUser}) {
     }
   };
 
-    const fetchTimeSeriesData = async (symbol) => {
+
+  const fetchTimeSeriesData = async (symbol) => {
+
 
     try {
       const response = await fetch(`/api/stocks/daily?symbol=${encodeURIComponent(symbol)}`);
@@ -193,6 +185,7 @@ export default function PortfolioPage({user, setUser}) {
         {assets.map((asset) => (
         <tr>
          <td>{asset.symbol} </td>
+
          <td>{editable === asset._id ? <input id='editbox' type='integer' key={asset._id}  value={asset.share_balance} name='share_balance' onChange={(e) => handleChange(e, asset._id)}/> : asset.share_balance}</td>
          <td>{editable === asset._id ? <input id='editbox' type='integer' key={asset._id}   value={asset.purchase_price} name='purchase_price' onChange={(e) => handleChange(e, asset._id)}/> : asset.purchase_price}</td>
          <td>$15,000.00</td>
@@ -217,7 +210,6 @@ export default function PortfolioPage({user, setUser}) {
         </div>
   </div>
 
-
       <div id='stock-data-container' className='ml-auto mt-11'>
         <div className='flex'>
           <form onSubmit={handleSearch}>
@@ -235,6 +227,7 @@ export default function PortfolioPage({user, setUser}) {
         <div id='actions' className='flex'>
           <h1 className='font-bold'>Recommended Actons: </h1>
         </div>
+
         <div  className='flex'>
         <h1 id='buyticker'>Buy/Sell </h1>
         </div>
@@ -248,4 +241,4 @@ export default function PortfolioPage({user, setUser}) {
       </div>
     </>
   );
-}
+}}
