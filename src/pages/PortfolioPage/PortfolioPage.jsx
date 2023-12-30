@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useRef } from 'react';
+import { createChart } from 'lightweight-charts';
+import StockChart from './StockChart';
+import { getToken } from '../../utilities/users-service';
 
 
 export default function PortfolioPage({user, setUser}) {
@@ -8,7 +12,35 @@ export default function PortfolioPage({user, setUser}) {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState(null);
   const [assets, setAssets] = useState([]);
+  const [editable, setEditable] = useState(null);
   const [timeSeriesData, setTimeSeriesData] = useState(null);
+  const chartContainerRef = useRef(null);
+  const chartRef = useRef(null);
+  const candleSeriesRef = useRef(null);
+  const [selectedSymbol, setSelectedSymbol] = useState('');
+
+  useEffect(() => {
+    if (chartContainerRef.current && !chartRef.current) {
+      const newChart = createChart(chartContainerRef.current, { width: 600, height: 200 });
+      const newCandleSeries = newChart.addCandlestickSeries();
+      chartRef.current = newChart;
+      candleSeriesRef.current = newCandleSeries;
+    }
+
+    return () => {
+      if (chartRef.current) {
+        chartRef.current.remove();
+        chartRef.current = null;
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (candleSeriesRef.current && timeSeriesData) {
+      candleSeriesRef.current.setData(timeSeriesData);
+    }
+  }, [timeSeriesData]);
+
 
   useEffect(() => {
     const fetchAssets = async () => {
@@ -24,30 +56,119 @@ export default function PortfolioPage({user, setUser}) {
     fetchAssets();
   }, []);
 
-  const fetchTimeSeriesData = async (symbol) => {
+  const handleChange = (e, assetId)=>{
+    setAssets( (assets) => 
+    assets.map((asset) => 
+    asset._id === assetId
+    ? {...asset, [e.target.name]: e.target.value}
+    : asset
+    )
+    );
+  };
+  const toggleEditMode = (assetId) => {
+    setEditable(editable === assetId ? null : assetId);
+  }
+  
+  const handleUpdate = async (assetId) => {
+    const index = assets.findIndex(asset => asset._id === assetId);
+    const updatedAssets = [...assets]
+ 
+    const updatedData = {
+    share_balance: updatedAssets[index].share_balance,
+    purchase_price: updatedAssets[index].purchase_price,
+  };
+
+  updatedAssets[index] = {
+    ...updatedAssets[index],
+    ...assets[index],
+  };
+    
+    try {
+      const response = await fetch(`/api/assets/${assetId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        },
+        body: JSON.stringify(updatedData),
+      });
+
+      console.log('After fetch:', assets[index]);
+
+      if (response.ok){
+        setAssets(updatedAssets);
+        setEditable(null);
+      } else {
+        console.error('Error updating asset:', response.statusText);
+      }
+    } catch (error){
+      console.error('Error updating asset:', error.message);
+    }
+  };
+
+    
+  const handleDelete = async (assetId) => {
+    try {
+      const response = await fetch(`/api/assets/${assetId}`, {method: 'Delete'});
+      if (response.ok) {
+        const updatedAssets = assets.filter((asset) => asset._id !== assetId);
+        setAssets(updatedAssets);
+      } else {
+        console.error('Error deleting asset:', response.statusText);
+      }
+    }catch(error){
+      console.error('Error deleting asset:', error.message);
+    }
+  };
+
+    const fetchTimeSeriesData = async (symbol) => {
+
     try {
       const response = await fetch(`/api/stocks/daily?symbol=${encodeURIComponent(symbol)}`);
-      const data = await response.json();
-      setTimeSeriesData(data); 
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const rawData = await response.json();
+      const formattedData = rawData.map(dataPoint => ({
+        time: dataPoint.date, 
+        open: parseFloat(dataPoint.open),
+        high: parseFloat(dataPoint.high),
+        low: parseFloat(dataPoint.low),
+        close: parseFloat(dataPoint.close),
+      }));
+  
+      setTimeSeriesData(formattedData); 
     } catch (error) {
       console.error('Error fetching time series data:', error);
     }
   };
+  
 
   const handleSearch = async (event) => {
     event.preventDefault();
     try {
-      const searchResponse = await fetch(`/api/stocks/search?keywords=${encodeURIComponent(searchTerm)}`);
-      const searchData = await searchResponse.json();
-      setSearchResults(Array.isArray(searchData) ? searchData : [searchData]);
-      if (searchData.bestMatches && searchData.bestMatches.length > 0) {
-        const symbol = searchData.bestMatches[0]['1. symbol']; 
-        fetchTimeSeriesData(symbol);
-      }
+        const searchResponse = await fetch(`/api/stocks/search?keywords=${encodeURIComponent(searchTerm)}`);
+        const searchData = await searchResponse.json();
+        
+        console.log(searchData);
+        if (searchData.bestMatches) {
+            console.log(searchData.bestMatches); 
+        }
+
+        setSearchResults(Array.isArray(searchData) ? searchData : [searchData]);
+        if (searchData.bestMatches && searchData.bestMatches.length > 0) {
+            console.log(searchData.bestMatches[0]); 
+            const symbol = searchData.bestMatches[0]['1. symbol'];
+            setSelectedSymbol(symbol);
+            console.log(`Selected Symbol in PortfolioPage: ${symbol}`); 
+            fetchTimeSeriesData(symbol);
+        }
     } catch (error) {
-      console.error('Error fetching search results:', error);
+        console.error('Error fetching search results:', error);
     }
-  };
+    
+};
+
   
   return (
     <>
@@ -70,12 +191,21 @@ export default function PortfolioPage({user, setUser}) {
       </thead>
       <tbody>
         {assets.map((asset) => (
-        <tr key={asset._id}>
-         <td>{asset.symbol}</td>
-         <td>{asset.share_balance}</td>
-         <td>{asset.purchase_price}</td>
+        <tr>
+         <td>{asset.symbol} </td>
+         <td>{editable === asset._id ? <input id='editbox' type='integer' key={asset._id}  value={asset.share_balance} name='share_balance' onChange={(e) => handleChange(e, asset._id)}/> : asset.share_balance}</td>
+         <td>{editable === asset._id ? <input id='editbox' type='integer' key={asset._id}   value={asset.purchase_price} name='purchase_price' onChange={(e) => handleChange(e, asset._id)}/> : asset.purchase_price}</td>
          <td>$15,000.00</td>
          <td>$2,500.00</td>
+         <td> {editable === asset._id ? (
+         <button onClick={() => handleUpdate(asset._id)}>Save</button>
+         ) : (
+         <button onClick={() => toggleEditMode(asset._id)}>Edit</button>
+         )} 
+         </td>
+         <td>
+          <button onClick={() => handleDelete(asset._id)}>Delete</button>
+         </td>
         </tr>
         ))}
       </tbody>
@@ -86,6 +216,8 @@ export default function PortfolioPage({user, setUser}) {
         <h1 className='text-white font-bold m-3 p-1' id='assetbutton'><Link to={'/asset/edit'}>Edit Assets</Link></h1>
         </div>
   </div>
+
+
       <div id='stock-data-container' className='ml-auto mt-11'>
         <div className='flex'>
           <form onSubmit={handleSearch}>
@@ -99,9 +231,7 @@ export default function PortfolioPage({user, setUser}) {
             <button type="submit" style={{ color: 'black', backgroundColor: 'white', border: '1px solid black', borderRadius: '40px', padding: '8px 1px', cursor: 'pointer' }}>Search</button>
           </form>
         </div>
-        <div className='flex-col'>
-          <div id='graph-container'></div>
-        </div>
+        {selectedSymbol && <StockChart symbol={selectedSymbol} />}
         <div id='actions' className='flex'>
           <h1 className='font-bold'>Recommended Actons: </h1>
         </div>

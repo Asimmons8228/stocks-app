@@ -1,7 +1,7 @@
 import kevinImage from '../../assets/images/Kevin-image.png'
 import davidImage from '../../assets/images/T0351JZQ0-U01AVS70Z9B-d7d3a5c4df44-512.jpeg'
 import aaronImage from '../../assets/images/IMG_0511.jpg'
-import nickImage from '../../assets/images/Nick-Image.jpeg'
+import chukImage from '../../assets/images/Chuk-Image.jpeg'
 
 export default function HomePage (){
     return(
@@ -38,9 +38,9 @@ export default function HomePage (){
             </article>
         </div>
         <div className='m-8 flex flex-col items-center'>
-            <img id='testimonialimg' src={nickImage} alt="" className='w-20. h-20 rounded-full mb-4'/>
+            <img id='testimonialimg' src={chukImage} alt="" className='w-20. h-20 rounded-full mb-4'/>
             <article id='testimonial-box'>
-                <p className='mt-2 p-2'>Portfolio-Pro has transformed the way I manage my investments. The intuitive interface and powerful tools make tracking stocks and analyzing performance a breeze. I've seen significant improvements in my portfolio management since using Portfolio-Pro. Highly recommended!<br></br><strong>-Nick</strong></p>
+                <p className='mt-2 p-2'>Portfolio-Pro has transformed the way I manage my investments. The intuitive interface and powerful tools make tracking stocks and analyzing performance a breeze. I've seen significant improvements in my portfolio management since using Portfolio-Pro. Highly recommended!<br></br><strong>-Chuk</strong></p>
             </article>
         </div>
         <div className='m-8 flex flex-col items-center'>
