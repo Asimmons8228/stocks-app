@@ -185,7 +185,7 @@ export default function PortfolioPage({user, setUser}) {
           <th className=''>Stock Ticker</th>
           <th className='pr-2'>Shares Amount</th>
           <th className='pr-2'>Purchase Price</th>
-          <th className='pr-2'>Current Valuation</th>
+          <th className='pr-2'>Valuation</th>
           <th className='pr-2'>Profit/Loss</th>
         </tr>
       </thead>
@@ -195,7 +195,7 @@ export default function PortfolioPage({user, setUser}) {
          <td>{asset.symbol} </td>
          <td>{editable === asset._id ? <input id='editbox' type='integer' key={asset._id}  value={asset.share_balance} name='share_balance' onChange={(e) => handleChange(e, asset._id)}/> : asset.share_balance}</td>
          <td>{editable === asset._id ? <input id='editbox' type='integer' key={asset._id}   value={asset.purchase_price} name='purchase_price' onChange={(e) => handleChange(e, asset._id)}/> : asset.purchase_price}</td>
-         <td>$15,000.00</td>
+         <td>${asset.share_balance * asset.purchase_price}</td>
          <td>$2,500.00</td>
          <td> {editable === asset._id ? (
          <button onClick={() => handleUpdate(asset._id)}>Save</button>
@@ -213,7 +213,6 @@ export default function PortfolioPage({user, setUser}) {
       </div>
           <div  className='flex'>
         <h1 className='text-white font-bold mr-3 mt-3 mb-3 p-1' id='assetbutton'><Link to={'/asset/new'}>Add Asset</Link></h1>
-        <h1 className='text-white font-bold m-3 p-1' id='assetbutton'><Link to={'/asset/edit'}>Edit Assets</Link></h1>
         </div>
   </div>
 
@@ -226,7 +225,7 @@ export default function PortfolioPage({user, setUser}) {
               id='searchbox'
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search for a stock..."
+              placeholder="Search stock symbol..."
             />
             <button type="submit" style={{ color: 'black', backgroundColor: 'white', border: '1px solid black', borderRadius: '40px', padding: '8px 1px', cursor: 'pointer' }}>Search</button>
           </form>
@@ -237,12 +236,6 @@ export default function PortfolioPage({user, setUser}) {
         </div>
         <div  className='flex'>
         <h1 id='buyticker'>Buy/Sell </h1>
-        </div>
-        <div id='actions' className='flex'>
-          <h1>Potential profit/loss based upon 52-week high/low</h1>
-        </div>
-        <div  className='flex'>
-        <h1 id='buyticker'>60% profit </h1>
         </div>
       </div>
       </div>
