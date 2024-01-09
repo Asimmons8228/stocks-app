@@ -20,8 +20,12 @@ export default function HomePage (){
     <section id="home-section-2">
         <h1 id='header' className="text-white font-bold text-xl">Financial Success with a 90% accurcy rate!</h1>
         <div className="flex justify-between items-center">
-        <div id="infobox" className="flex-grow ml-8"></div>
-        <div id="infobox" className="flex-grow ml-8 mr-8"></div>
+        <div id="infobox" className="flex-grow ml-8">
+            <img src="https://i.imgur.com/DllgEQV.png" style={{width:'100%', maxHeight:'100%', height:'100%', objectFit: 'fill'}} alt="" />
+        </div>
+        <div id="infobox" className="flex-grow ml-8 mr-8">
+            <img src="https://i.imgur.com/2mGtp2t.jpg" style={{width:'100%', maxHeight:'100%', height:'100%'}} alt="" />
+        </div>
         <div id="infobox" className="flex-grow mr-8">
             <img src="https://www.spreadsheetweb.com/wp-content/uploads/2019/05/Stock-Chart-1080x675.jpg" style={{width:'100%', maxHeight:'100%', height:'100%'}} alt="" />
         </div>
